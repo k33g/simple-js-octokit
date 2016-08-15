@@ -1,0 +1,22 @@
+{
+  "name": "simple-js-octokit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k33g/simple-js-octokit.git"
+  },
+  "author": "k33g",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/k33g/simple-js-octokit/issues"
+  },
+  "homepage": "https://github.com/k33g/simple-js-octokit#readme",
+  "dependencies": {
+    "node-fetch": "^1.6.0"
+  }
+}
