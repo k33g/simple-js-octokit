@@ -115,7 +115,39 @@ class GitHubClient {
     });
   }
 
+  /* Organizations
+    ### Organization Administration
 
+    #### Create an organization:
+
+      - only for GitHub Enterprise
+      - `POST /admin/organizations`
+      - see https://developer.github.com/v3/enterprise/orgs/#create-an-organization
+
+      ```
+      login	string	Required. The organization's username.
+      admin	string	Required. The login of the user who will manage this organization.
+      profile_name	string	The organization's display name.
+      ```
+    TODO:
+    https://developer.github.com/v3/orgs/
+
+  */
+  createOrganization({login, admin, profile_name}) {
+    return this.postData({path:`/admin/organizations`, data:{
+      login: login,
+      admin: admin,
+      profile_name: profile_name
+    }}).then(response => {
+      return response.data;
+    });
+  }
+
+  /* Teams
+
+  */
+
+  
 }
 
 
