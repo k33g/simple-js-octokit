@@ -211,6 +211,19 @@ class GitHubClient {
     });
   }
 
+  /* Milestones
+
+  */
+  createMilestone({title, state, description, due_on, owner, repository}) {
+    return this.postData({path:`/repos/${owner}/${repository}/milestones`, data:{
+      title: title,
+      state: state,
+      description: description,
+      due_on: due_on
+    }}).then(response => {
+      return response.data;
+    });
+  }
 }
 
 
