@@ -14,3 +14,18 @@ githubCli.createPublicOrganizationRepository({name:"toys", description:"my littl
   .then(repo => {
     console.log(repo)
   })
+
+githubCli.createPublicOrganizationRepository({name:"repo-00", description:"TBD", organization:"UnitedFederationOfPlanets"})
+  .then(repo => {
+    console.log(repo)
+  })
+
+githubCli.createPublicOrganizationRepository({name:"repo-01", description:"TBD", organization:"UnitedFederationOfPlanets"})
+  .then(repo => {
+    console.log(repo)
+  })
+
+githubCli.createPublicOrganizationRepository({name:"repo-02", description:"TBD", organization:"UnitedFederationOfPlanets"})
+  .then(repo => {
+    console.log(repo)
+  })

@@ -50,6 +50,23 @@ class GitHubClient {
     })
   }
 
+  putData({path, data}) {
+    let _response = {}
+    return fetch(this.baseUri + path, {
+      method: 'PUT',
+      headers: this.headers,
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      _response = response
+      return response.ok ? response.json() : null;
+    })
+    .then(jsonData => {
+      _response.data = jsonData;
+      return _response;
+    })
+  }
+
   // get user data
   fetchUser({handle}) {
     return this.getData({path:`/users/${handle}`})
@@ -144,10 +161,56 @@ class GitHubClient {
   }
 
   /* Teams
+    ### Teams
+
+    #### Create a Team
+
+    See https://developer.github.com/v3/orgs/teams/#create-team
+    POST /orgs/:org/teams
+
+    :warning: In order to create a team, the authenticated user must be a member of :org.
+    -> or you have to be the administrator
 
   */
+  createTeam({org, name, description, repo_names, privacy, permission}) {
+    return this.postData({path:`/orgs/${org}/teams`, data:{
+      name: name,
+      description: description,
+      repo_names: repo_names,
+      privacy: privacy, // secret or closed
+      permission: permission // pull, push, admin
+    }}).then(response => {
+      return response.data;
+    });
+  }
+  // list of the teams of the organization
+  // See https://developer.github.com/v3/orgs/teams/#list-teams
+  fetchTeams({org}) {
+    return this.getData({path:`/orgs/${org}/teams`})
+    .then(response => {
+      return response.data;
+    });
+  }
 
-  
+  getTeamByName({org, name}) {
+    return this.fetchTeams({org:org})
+    .then(teams => {
+      return teams.find(team => {
+        return team.name = name
+      })
+    })
+  }
+
+  // Add team membership
+  // PUT /teams/:id/memberships/:username
+  addTeamMembership({teamId, userName, role}) {
+    return this.putData({path:`/teams/${teamId}/memberships/${userName}`, data:{
+      role: role // member, maintener
+    }}).then(response => {
+      return response.data;
+    });
+  }
+
 }
 
 
