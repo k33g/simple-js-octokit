@@ -12,9 +12,9 @@ githubCli.createTeam({
   name: 'USSEnterpriseCrew',
   description: 'the dream team',
   repo_names:[
-    'repo-00',
-    'repo-01',
-    'repo-02'
+    'UnitedFederationOfPlanets/repo-00',
+    'UnitedFederationOfPlanets/repo-01',
+    'UnitedFederationOfPlanets/repo-02'
   ],
   privacy: 'closed',
   permission:'admin'
