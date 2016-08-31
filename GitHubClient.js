@@ -224,7 +224,23 @@ class GitHubClient {
       return response.data;
     });
   }
-}
+
+  /* Milestones
+
+  */
+  createLabel({name, color, owner, repository}) {
+    return this.postData({path:`/repos/${owner}/${repository}/labels`, data:{
+      name: name,
+      color: color
+    }}).then(response => {
+      return response.data;
+    });
+  }
+
+} // end of class
+
+
+
 
 
 module.exports = GitHubClient

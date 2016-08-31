@@ -9,7 +9,7 @@ let githubCli = new GitHubClient({
 githubCli.createOrganization({
   login:'UnitedFederationOfPlanets', // organization is like a user
   admin:'k33g',
-  profil_name:'United Federation of Planets'
+  profile_name:'United Federation of Planets'
 }).then(orga => {
   console.log(orga)
 })
