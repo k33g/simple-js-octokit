@@ -33,6 +33,25 @@ class GitHubClient {
     })
   }
 
+  deleteData({path}) {
+    let _response = {}
+    return fetch(this.baseUri + path, {
+      method: 'DELETE',
+      headers: this.headers
+    })
+    .then(response => {
+      // save reference of response / then we can access to headers
+      _response = response
+      // if response is ok transform response.text to json object
+      return response.ok ? response.json() : null;
+    })
+    .then(jsonData => {
+      // add json data to _response
+      _response.data = jsonData;
+      return _response;
+    })
+  }
+
   postData({path, data}) {
     let _response = {}
     return fetch(this.baseUri + path, {
@@ -74,6 +93,33 @@ class GitHubClient {
       return response.data;
     });
   }
+  //https://developer.github.com/v3/users/administration/#suspend-a-user
+  suspendUser({handle}) {
+    this.headers["Content-Length"] = 0;
+    return fetch(this.baseUri + `/users/${handle}/suspended`, {
+      method: 'PUT',
+      headers: this.headers,
+      body: null
+    })
+    .then(response => {
+      delete this.headers["Content-Length"];
+      return response
+    })
+  }
+
+  unsuspendUser({handle}) {
+    //this.headers["Content-Length"] = 0;
+    return fetch(this.baseUri + `/users/${handle}/suspended`, {
+      method: 'DELETE',
+      headers: this.headers,
+    })
+    .then(response => {
+      return response
+    })
+  }
+
+
+
   /*
     Repositories
     TODO:
@@ -240,7 +286,7 @@ class GitHubClient {
 } // end of class
 
 
-
-
-
-module.exports = GitHubClient
+//module.exports = GitHubClient
+module.exports = {
+  GitHubClient: GitHubClient
+}

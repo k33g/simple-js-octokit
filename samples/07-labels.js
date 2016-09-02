@@ -1,4 +1,4 @@
-const GitHubClient = require('../GitHubClient.js');
+const GitHubClient = require('../GitHubClient.js').GitHubClient;
 
 let githubCli = new GitHubClient({
   baseUri:"http://github.at.home/api/v3",

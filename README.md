@@ -26,7 +26,7 @@ export TOKEN_GITHUB_ENTERPRISE=<YOUR_TOKEN>
 ### Initialize GitHub client
 
 ```javascript
-const GitHubClient = require('./GitHubClient.js');
+const GitHubClient = require('../GitHubClient.js').GitHubClient;
 
 // GitHubClient to connect to GitHub Enterprise
 let githubCli = new GitHubClient({
