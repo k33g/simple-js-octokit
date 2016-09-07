@@ -3,6 +3,16 @@ const fetch = require('node-fetch');
 // https://github.com/bitinn/node-fetch
 // npm install node-fetch --save
 
+class HttpException extends Error {
+  constructor({message, status, statusText, url}) {
+    super(message);
+    this.status = status;
+    this.statusText = statusText;
+    this.url = url;
+    //Error.captureStackTrace(this, this.constructor.name)
+  }
+}
+
 class GitHubClient {
   constructor({baseUri, token}) {
     this.baseUri = baseUri
@@ -24,7 +34,17 @@ class GitHubClient {
       // save reference of response / then we can access to headers
       _response = response
       // if response is ok transform response.text to json object
-      return response.ok ? response.json() : null;
+      // else throw error
+      if (response.ok) {
+        return response.json()
+      } else {
+        throw new HttpException({
+          message: "HttpException",
+          status:response.status,
+          statusText:response.statusText,
+          url: response.url
+        });
+      }
     })
     .then(jsonData => {
       // add json data to _response
@@ -43,7 +63,17 @@ class GitHubClient {
       // save reference of response / then we can access to headers
       _response = response
       // if response is ok transform response.text to json object
-      return response.ok ? response.json() : null;
+      // else throw error
+      if (response.ok) {
+        return response.json()
+      } else {
+        throw new HttpException({
+          message: "HttpException",
+          status:response.status,
+          statusText:response.statusText,
+          url: response.url
+        });
+      }
     })
     .then(jsonData => {
       // add json data to _response
@@ -61,7 +91,18 @@ class GitHubClient {
     })
     .then(response => {
       _response = response
-      return response.ok ? response.json() : null;
+      // if response is ok transform response.text to json object
+      // else throw error
+      if (response.ok) {
+        return response.json()
+      } else {
+        throw new HttpException({
+          message: "HttpException",
+          status:response.status,
+          statusText:response.statusText,
+          url: response.url
+        });
+      }
     })
     .then(jsonData => {
       _response.data = jsonData;
@@ -78,7 +119,18 @@ class GitHubClient {
     })
     .then(response => {
       _response = response
-      return response.ok ? response.json() : null;
+      // if response is ok transform response.text to json object
+      // else throw error
+      if (response.ok) {
+        return response.json()
+      } else {
+        throw new HttpException({
+          message: "HttpException",
+          status:response.status,
+          statusText:response.statusText,
+          url: response.url
+        });
+      }
     })
     .then(jsonData => {
       _response.data = jsonData;
