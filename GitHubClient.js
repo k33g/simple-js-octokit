@@ -195,8 +195,6 @@ class GitHubClient {
     });
   }
 
-
-
   createPublicRepository({name, description}) {
     return this.postData({path:`/user/repos`, data:{
       name: name,
@@ -331,6 +329,24 @@ class GitHubClient {
   /* Milestones
 
   */
+  // GET /repos/:owner/:repo/milestones
+
+  fetchMilestones({owner, repository}){
+    return this.getData({path:`/repos/${owner}/${repository}/milestones`})
+    .then(response => {
+      return response.data;
+    });
+  }
+
+  getMilestoneByTitle({title, owner, repository}) {
+    return this.fetchTeams({org:org})
+    .then(milestones => {
+      return milestones.find(milestone => {
+        return milestone.title = title
+      })
+    })
+  }
+
   createMilestone({title, state, description, due_on, owner, repository}) {
     return this.postData({path:`/repos/${owner}/${repository}/milestones`, data:{
       title: title,
@@ -342,7 +358,7 @@ class GitHubClient {
     });
   }
 
-  /* Milestones
+  /* Labels
 
   */
   createLabel({name, color, owner, repository}) {
@@ -353,6 +369,19 @@ class GitHubClient {
       return response.data;
     });
   }
+
+  /* Issues
+
+  */
+  createIssue({title, body, labels, milestone, assignees, owner, repository}) {
+    return this.postData({path:`/repos/${owner}/${repository}/issues`, data:{
+      title, body, labels, milestone, assignees, owner, repository
+    }}).then(response => {
+      return response.data;
+    });
+  }
+
+
 
 } // end of class
 
