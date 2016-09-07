@@ -175,9 +175,28 @@ class GitHubClient {
   /*
     Repositories
     TODO:
-    - fetch, delete, update
+    - fetch
     - refactoring
   */
+
+  // GET /users/:username/repos
+  fetchUserRepositories({handle}) {
+    return this.getData({path:`/users/${handle}/repos`})
+    .then(response => {
+      return response.data;
+    });
+  }
+
+  // GET /orgs/:org/repos
+  fetchOrganizationRepositories({organization}) {
+    return this.getData({path:`/orgs/${organization}/repos`})
+    .then(response => {
+      return response.data;
+    });
+  }
+
+
+
   createPublicRepository({name, description}) {
     return this.postData({path:`/user/repos`, data:{
       name: name,
