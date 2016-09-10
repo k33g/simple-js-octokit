@@ -1,6 +1,5 @@
 node_modules/*
 sandbox/*
-sandbox.events/*
 sandbox.search/*
 .DS_Store
 TODO.md
