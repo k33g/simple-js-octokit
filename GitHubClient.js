@@ -24,35 +24,6 @@ class GitHubClient {
     }
   }
 
-  simpleGet({path}) {
-    let _response = {}
-    return fetch(path, {
-      method: 'GET',
-      headers: this.headers
-    })
-    .then(response => {
-      // save reference of response / then we can access to headers
-      _response = response
-      // if response is ok transform response.text to json object
-      // else throw error
-      if (response.ok) {
-        return response.json()
-      } else {
-        throw new HttpException({
-          message: "HttpException",
-          status:response.status,
-          statusText:response.statusText,
-          url: response.url
-        });
-      }
-    })
-    .then(jsonData => {
-      // add json data to _response
-      _response.data = jsonData;
-      return _response;
-    })
-  }
-
   getData({path}) {
     let _response = {}
     return fetch(this.baseUri + path, {
@@ -417,7 +388,38 @@ class GitHubClient {
     });
   }
 
+  /* Commits
+  */
 
+  // Get a commit by SHA
+  // GET /repos/:owner/:repo/git/commits/:sha
+  fetchCommitBySHA({sha, owner, repository}){
+    return this.getData({path:`/repos/${owner}/${repository}/git/commits/${sha}`})
+    .then(response => {
+      return response.data;
+    });
+  }
+
+  /* Contents
+    TODO:
+    - trees: https://developer.github.com/v3/git/trees/
+  */
+
+  /*
+    https://developer.github.com/v3/repos/contents/#get-contents
+    GET /repos/:owner/:repo/contents/:path
+    let src = new Buffer(contentInformation.content, contentInformation.encoding).toString("ascii"),
+        sha = contentInformation.sha;
+  */
+  fetchContent({path, owner, repository, decode}){
+    return this.getData({path:`/repos/${owner}/${repository}/contents/${path}`})
+    .then(response => {
+      if(decode==true) {
+        response.data.contentText = new Buffer(response.data.content, response.data.encoding).toString("ascii")
+      }
+      return response.data;
+    });
+  }
 
 } // end of class
 
