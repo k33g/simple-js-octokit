@@ -400,6 +400,26 @@ class GitHubClient {
     });
   }
 
+  /* Contents
+    TODO:
+    - trees: https://developer.github.com/v3/git/trees/
+  */
+
+  /*
+    https://developer.github.com/v3/repos/contents/#get-contents
+    GET /repos/:owner/:repo/contents/:path
+    let src = new Buffer(contentInformation.content, contentInformation.encoding).toString("ascii"),
+        sha = contentInformation.sha;
+  */
+  fetchContent({path, owner, repository, decode}){
+    return this.getData({path:`/repos/${owner}/${repository}/contents/${path}`})
+    .then(response => {
+      if(decode==true) {
+        response.data.contentText = new Buffer(response.data.content, response.data.encoding).toString("ascii")
+      }
+      return response.data;
+    });
+  }
 
 } // end of class
 
