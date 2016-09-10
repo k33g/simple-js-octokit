@@ -24,6 +24,35 @@ class GitHubClient {
     }
   }
 
+  simpleGet({path}) {
+    let _response = {}
+    return fetch(path, {
+      method: 'GET',
+      headers: this.headers
+    })
+    .then(response => {
+      // save reference of response / then we can access to headers
+      _response = response
+      // if response is ok transform response.text to json object
+      // else throw error
+      if (response.ok) {
+        return response.json()
+      } else {
+        throw new HttpException({
+          message: "HttpException",
+          status:response.status,
+          statusText:response.statusText,
+          url: response.url
+        });
+      }
+    })
+    .then(jsonData => {
+      // add json data to _response
+      _response.data = jsonData;
+      return _response;
+    })
+  }
+
   getData({path}) {
     let _response = {}
     return fetch(this.baseUri + path, {
@@ -136,6 +165,13 @@ class GitHubClient {
       _response.data = jsonData;
       return _response;
     })
+  }
+
+  searchCode({q}) {
+    return this.getData({path:`/search/code?q=${q}`})
+    .then(response => {
+      return response.data;
+    });
   }
 
   // get user data
