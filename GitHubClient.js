@@ -388,6 +388,17 @@ class GitHubClient {
     });
   }
 
+  /* Commits
+  */
+
+  // Get a commit by SHA
+  // GET /repos/:owner/:repo/git/commits/:sha
+  fetchCommitBySHA({sha, owner, repository}){
+    return this.getData({path:`/repos/${owner}/${repository}/git/commits/${sha}`})
+    .then(response => {
+      return response.data;
+    });
+  }
 
 
 } // end of class

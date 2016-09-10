@@ -5,10 +5,14 @@ let githubCli = new GitHubClient({
   token:process.env.TOKEN_GHE_27_K33G
 });
 
-githubCli.searchCode({q:'incrementOf1+in:file'}).then(result => {
-  console.log(result.total_count, result.incomplete_results)
-  console.log(result)
+githubCli.fetchCommitBySHA({
+  sha: 'eeea1146097de8479bd6bdf8c2102f52198f16dd',
+  owner: 'k33g',
+  repository: 'stools'
 })
-.catch(error => {
-  console.log("error", error)
+.then(data => {
+  console.log(data)
+})
+.catch(err => {
+  console.error(err)
 })
