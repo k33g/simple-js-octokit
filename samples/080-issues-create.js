@@ -5,6 +5,8 @@ let githubCli = new GitHubClient({
   token:process.env.TOKEN_GHE_27_K33G
 });
 
+
+// Don't forget to give the good rights (write) if you want to qualify the issue (add milestone, label...)
 githubCli.createIssue({
   title:"Huston?",
   body:`## I've got a problem

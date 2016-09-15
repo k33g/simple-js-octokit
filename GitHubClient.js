@@ -19,7 +19,7 @@ class GitHubClient {
     this.credentials = token !== null && token.length > 0 ? "token" + ' ' + token : null
     this.headers = {
       "Content-Type": "application/json",
-      "Accept": "application/vnd.github.v3.full+json",
+      "Accept": "application/vnd.github.v3.full+jsonß",
       "Authorization": this.credentials
     }
   }
@@ -378,7 +378,15 @@ class GitHubClient {
   }
 
   /* Issues
+    TODO:
+    - Edit, lock, unlock
+  */
 
+
+
+  /*
+    Create an issue
+    https://developer.github.com/v3/issues/#create-an-issue
   */
   createIssue({title, body, labels, milestone, assignees, owner, repository}) {
     return this.postData({path:`/repos/${owner}/${repository}/issues`, data:{
@@ -387,6 +395,104 @@ class GitHubClient {
       return response.data;
     });
   }
+
+  /*
+    Get a single issue
+    https://developer.github.com/v3/issues/#get-a-single-issue
+    Note: In the past, pull requests and issues were more closely aligned than they are now. As far as the API is concerned, every pull request is an issue, but not every issue is a pull request.
+    This endpoint may also return pull requests in the response. If an issue is a pull request, the object will include a pull_request key.
+    GET /repos/:owner/:repo/issues/:number
+
+  */
+  fetchIssue({owner, repository, number}) {
+    return this.getData({path:`/repos/${owner}/${repository}/issues/${number}`})
+    .then(response => {
+      return response.data;
+    });
+  }
+  /*
+    List issues for a repository
+    https://developer.github.com/v3/issues/#list-issues-for-a-repository
+    Note: In the past, pull requests and issues were more closely aligned than they are now. As far as the API is concerned, every pull request is an issue, but not every issue is a pull request.
+    This endpoint may also return pull requests in the response. If an issue is a pull request, the object will include a pull_request key.
+    GET /repos/:owner/:repo/issues
+
+    TODO: next, previous
+  */
+  fetchIssues({owner, repository}) {
+    return this.getData({path:`/repos/${owner}/${repository}/issues`})
+    .then(response => {
+      return response.data;
+    });
+  }
+
+  // https://developer.github.com/v3/issues/comments/
+  /*
+    Create a commentIntegrations
+    POST /repos/:owner/:repo/issues/:number/comments
+
+    TODO: Edit
+  */
+  addIssueComment({owner, repository, number, body}) {
+    return this.postData({path:`/repos/${owner}/${repository}/issues/${number}/comments`, data:{
+      body
+    }}).then(response => {
+      return response.data;
+    });
+  }
+  /*
+    List comments on an issue
+    https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue
+    GET /repos/:owner/:repo/issues/:number/comments
+
+  */
+  fetchIssueComments({owner, repository, number}) {
+    return this.getData({path:`/repos/${owner}/${repository}/issues/${number}/comments`})
+    .then(response => {
+      return response.data;
+    });
+  }
+
+  /*
+    Create reaction for an issue
+    https://developer.github.com/v3/reactions/#create-reaction-for-an-issue
+    POST /repos/:owner/:repo/issues/:number/reactions
+
+    +1, -1, laugh, confused, heart, hooray
+  */
+  addIssueReaction({owner, repository, number, content}) {
+    let saveAccept = this.headers["Accept"];
+    this.headers["Accept"] = "application/vnd.github.squirrel-girl-preview";
+    return this.postData({path:`/repos/${owner}/${repository}/issues/${number}/reactions`, data:{
+      content
+    }}).then(response => {
+      this.headers["Accept"] = saveAccept;
+      return response.data;
+    });
+  }
+  /*
+    Create reaction for an issue comment
+    POST /repos/:owner/:repo/issues/comments/:id/reactions
+
+    +1, -1, laugh, confused, heart, hooray
+
+  */
+  addIssueCommentReaction({owner, repository, id, content}) {
+    let saveAccept = this.headers["Accept"];
+    this.headers["Accept"] = "application/vnd.github.squirrel-girl-preview";
+    return this.postData({path:`/repos/${owner}/${repository}/issues/comments/${id}/reactions`, data:{
+      content
+    }}).then(response => {
+      this.headers["Accept"] = saveAccept;
+      return response.data;
+    });
+  }
+
+  searchIssue() {
+
+  }
+
+
 
   /* Commits
   */
