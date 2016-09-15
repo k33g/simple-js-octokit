@@ -18,4 +18,4 @@ githubCli.createIssue({
   assignees: ["k33g"],
   owner: 'UnitedFederationOfPlanets',
   repository: 'repo-00'
-}).then(res => console.log(res));
+}).then(res => console.log(res.id, res.number));
