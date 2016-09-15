@@ -378,7 +378,15 @@ class GitHubClient {
   }
 
   /* Issues
+    TODO:
+    - Edit, lock, unlock
+  */
 
+
+
+  /*
+    Create an issue
+    https://developer.github.com/v3/issues/#create-an-issue
   */
   createIssue({title, body, labels, milestone, assignees, owner, repository}) {
     return this.postData({path:`/repos/${owner}/${repository}/issues`, data:{
@@ -388,16 +396,61 @@ class GitHubClient {
     });
   }
 
-  fetchIssue() {
+  /*
+    Get a single issue
+    https://developer.github.com/v3/issues/#get-a-single-issue
+    Note: In the past, pull requests and issues were more closely aligned than they are now. As far as the API is concerned, every pull request is an issue, but not every issue is a pull request.
+    This endpoint may also return pull requests in the response. If an issue is a pull request, the object will include a pull_request key.
+    GET /repos/:owner/:repo/issues/:number
 
+  */
+  fetchIssue({owner, repository, number}) {
+    return this.getData({path:`/repos/${owner}/${repository}/issues/${number}`})
+    .then(response => {
+      return response.data;
+    });
+  }
+  /*
+    List issues for a repository
+    https://developer.github.com/v3/issues/#list-issues-for-a-repository
+    Note: In the past, pull requests and issues were more closely aligned than they are now. As far as the API is concerned, every pull request is an issue, but not every issue is a pull request.
+    This endpoint may also return pull requests in the response. If an issue is a pull request, the object will include a pull_request key.
+    GET /repos/:owner/:repo/issues
+
+    TODO: next, previous
+  */
+  fetchIssues({owner, repository}) {
+    return this.getData({path:`/repos/${owner}/${repository}/issues`})
+    .then(response => {
+      return response.data;
+    });
   }
 
-  fetchIssues() {
+  // https://developer.github.com/v3/issues/comments/
+  /*
+    Create a commentIntegrations
+    POST /repos/:owner/:repo/issues/:number/comments
 
+    TODO: Edit
+  */
+  addIssueComment({owner, repository, number, body}) {
+    return this.postData({path:`/repos/${owner}/${repository}/issues/${number}/comments`, data:{
+      body
+    }}).then(response => {
+      return response.data;
+    });
   }
 
-  addCommentToIssue() {
+  fetchIssueComments() {
     
+  }
+
+  addReaction() {
+
+  }
+
+  searchIssue() {
+
   }
 
 
