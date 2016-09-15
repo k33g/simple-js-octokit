@@ -527,6 +527,12 @@ class GitHubClient {
     });
   }
 
+  // --- create branch ---
+
+  // --- commit ---
+
+  // --- create PR ---
+
 } // end of class
 
 
