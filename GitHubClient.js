@@ -440,12 +440,24 @@ class GitHubClient {
       return response.data;
     });
   }
+  /*
+    List comments on an issue
+    https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue
+    GET /repos/:owner/:repo/issues/:number/comments
 
+  */
   fetchIssueComments() {
-    
+    return this.getData({path:`/repos/${owner}/${repository}/issues/${number}/comments`})
+    .then(response => {
+      return response.data;
+    });
   }
 
-  addReaction() {
+  addIssueReaction() {
+
+  }
+
+  addIssueCommentReaction() {
 
   }
 
