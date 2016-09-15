@@ -19,7 +19,7 @@ class GitHubClient {
     this.credentials = token !== null && token.length > 0 ? "token" + ' ' + token : null
     this.headers = {
       "Content-Type": "application/json",
-      "Accept": "application/vnd.github.v3.full+json",
+      "Accept": "application/vnd.github.v3.full+jsonß",
       "Authorization": this.credentials
     }
   }
@@ -446,19 +446,46 @@ class GitHubClient {
     GET /repos/:owner/:repo/issues/:number/comments
 
   */
-  fetchIssueComments() {
+  fetchIssueComments({owner, repository, number}) {
     return this.getData({path:`/repos/${owner}/${repository}/issues/${number}/comments`})
     .then(response => {
       return response.data;
     });
   }
 
-  addIssueReaction() {
+  /*
+    Create reaction for an issue
+    https://developer.github.com/v3/reactions/#create-reaction-for-an-issue
+    POST /repos/:owner/:repo/issues/:number/reactions
 
+    +1, -1, laugh, confused, heart, hooray
+  */
+  addIssueReaction({owner, repository, number, content}) {
+    let saveAccept = this.headers["Accept"];
+    this.headers["Accept"] = "application/vnd.github.squirrel-girl-preview";
+    return this.postData({path:`/repos/${owner}/${repository}/issues/${number}/reactions`, data:{
+      content
+    }}).then(response => {
+      this.headers["Accept"] = saveAccept;
+      return response.data;
+    });
   }
+  /*
+    Create reaction for an issue comment
+    POST /repos/:owner/:repo/issues/comments/:id/reactions
 
-  addIssueCommentReaction() {
+    +1, -1, laugh, confused, heart, hooray
 
+  */
+  addIssueCommentReaction({owner, repository, id, content}) {
+    let saveAccept = this.headers["Accept"];
+    this.headers["Accept"] = "application/vnd.github.squirrel-girl-preview";
+    return this.postData({path:`/repos/${owner}/${repository}/issues/comments/${id}/reactions`, data:{
+      content
+    }}).then(response => {
+      this.headers["Accept"] = saveAccept;
+      return response.data;
+    });
   }
 
   searchIssue() {
