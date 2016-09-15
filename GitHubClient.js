@@ -388,6 +388,20 @@ class GitHubClient {
     });
   }
 
+  fetchIssue() {
+
+  }
+
+  fetchIssues() {
+
+  }
+
+  addCommentToIssue() {
+    
+  }
+
+
+
   /* Commits
   */
 
