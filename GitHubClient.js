@@ -19,9 +19,30 @@ class GitHubClient {
     this.credentials = token !== null && token.length > 0 ? "token" + ' ' + token : null
     this.headers = {
       "Content-Type": "application/json",
-      "Accept": "application/vnd.github.v3.full+jsonß",
+      "Accept": "application/vnd.github.v3.full+json",
       "Authorization": this.credentials
     }
+  }
+
+  // octocat mindset
+  octocat() {
+    let _response = {}
+    return fetch(this.baseUri + `/octocat`, {
+      method: 'GET',
+      headers: this.headers
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.text()
+      } else {
+        throw new HttpException({
+          message: "HttpException",
+          status:response.status,
+          statusText:response.statusText,
+          url: response.url
+        });
+      }
+    })
   }
 
   getData({path}) {
@@ -527,9 +548,62 @@ class GitHubClient {
     });
   }
 
+  // --- reference ---
+  /*
+    TODO: documentation
+  */
+  getReference({owner, repository, ref}){
+    return this.getData({path:`/repos/${owner}/${repository}/git/refs/${ref}`})
+    .then(response => {
+      console.log(response.data)
+      return response.data;
+    });
+  }
+
+  createReference({ref, sha, owner, repository}) {
+    return this.postData({path:`/repos/${owner}/${repository}/git/refs`, data:{
+      ref, sha
+    }}).then(response => {
+      return response.data;
+    });
+  }
+
   // --- create branch ---
+  /*
+  githubCli.createBranch({
+      name: "wip-killer-feature-again-ping"
+    , from: "master"
+    , owner: "UnitedFederationOfPlanets"
+    , repository: "repo-00"
+  })
+  */
+  createBranch({name, from, owner, repository}) {
+    return this.getReference({
+        owner: owner
+      , repository: repository
+      , ref: `heads/${from}`
+    }).then(data => {
+      let sha = data.object.sha
+      console.log(sha)
+      return this.createReference({
+          ref: `refs/heads/${name}`
+        , sha: sha
+        , owner: owner
+        , repository: repository
+      })
+    })
+  }
 
   // --- commit ---
+
+
+
+
+
+
+
+
+
 
   // --- create PR ---
 
