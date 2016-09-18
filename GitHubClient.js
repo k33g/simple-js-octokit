@@ -555,7 +555,7 @@ class GitHubClient {
   getReference({owner, repository, ref}){
     return this.getData({path:`/repos/${owner}/${repository}/git/refs/${ref}`})
     .then(response => {
-      console.log(response.data)
+      //console.log(response.data)
       return response.data;
     });
   }
@@ -577,16 +577,16 @@ class GitHubClient {
     , repository: "repo-00"
   })
   */
-  createBranch({name, from, owner, repository}) {
+  createBranch({branch, from, owner, repository}) {
     return this.getReference({
         owner: owner
       , repository: repository
       , ref: `heads/${from}`
     }).then(data => {
       let sha = data.object.sha
-      console.log(sha)
+      //console.log(sha)
       return this.createReference({
-          ref: `refs/heads/${name}`
+          ref: `refs/heads/${branch}`
         , sha: sha
         , owner: owner
         , repository: repository
@@ -595,17 +595,32 @@ class GitHubClient {
   }
 
   // --- commit ---
-
-
-
-
-
-
-
-
-
+  /*
+    TODO: documentation + other commits features
+  */
+  createFile({file, content, message, branch, owner, repository}) {
+    let contentB64 = (new Buffer(content)).toString('base64');
+    return this.putData({path:`/repos/${owner}/${repository}/contents/${file}`, data:{
+      message, branch, content: contentB64
+    }}).then(response => {
+      return response.data;
+    });
+  }
 
   // --- create PR ---
+  /*
+    TODO: documentation, add labels, milestone and assignees
+  */
+  // head -> branch base -> eg master
+  createPullRequest({title, body, head, base, owner, repository}) {
+    return this.postData({path:`/repos/${owner}/${repository}/pulls`, data:{
+      title, body, head, base
+    }}).then(response => {
+      return response.data;
+    });
+  }
+
+
 
 } // end of class
 
