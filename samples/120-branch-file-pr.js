@@ -10,7 +10,7 @@ function createBranchThenFileAndPullRequest() {
   });
 
   let optionsBranch = {
-      branch: "wip-killer-feature-600"
+      branch: "wip-killer-feature-800"
     , from: "master"
     , owner: "UnitedFederationOfPlanets"
     , repository: "repo-00"
@@ -49,15 +49,19 @@ function createBranchThenFileAndPullRequest() {
         console.log("PR OK")
       })
       .catch(error => {
+        console.log(error)
         console.log("PR KO")
       })
     })
     .catch(error => {
       console.log("FILE KO")
+      console.log(error)
     })
   })
   .catch(error => {
     console.log("BRANCH KO")
+    console.log(error)
+
   })
 
 }
