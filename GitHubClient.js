@@ -620,6 +620,14 @@ class GitHubClient {
     });
   }
 
+  // --- Enterprise ---
+  fetchStats({type}){
+    return this.getData({path:`/enterprise/stats/${type}`})
+    .then(response => {
+      return response.data;
+    });
+  }
+
 
 
 } // end of class
