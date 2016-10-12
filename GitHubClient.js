@@ -649,7 +649,10 @@ class GitHubClient {
   // --- Create Hook ---
   createHook({owner, repository, hookName, hookConfig, hookEvents, active}) {
     return this.postData({path:`/repos/${owner}/${repository}/hooks`, data:{
-      hookName, hookConfig, hookEvents, active
+        name: hookName
+      , config: hookConfig
+      , events: hookEvents
+      , active: active
     }}).then(response => {
       return response.data;
     });
@@ -657,7 +660,10 @@ class GitHubClient {
   // organization hook
   createOrganizationHook({org, hookName, hookConfig, hookEvents, active}) {
     return this.postData({path:`/orgs/${org}/hooks`, data:{
-      hookName, hookConfig, hookEvents, active
+        name: hookName
+      , config: hookConfig
+      , events: hookEvents
+      , active: active
     }}).then(response => {
       return response.data;
     });
