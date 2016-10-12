@@ -344,10 +344,27 @@ class GitHubClient {
     })
   }
 
+  updateTeamRepository({teamId, organization, repository, permission}) {
+    return this.putData({path:`/teams/${teamId}/repos/${organization}/${repository}`, data:{
+      permission: permission
+    }}).then(response => {
+      return response.data;
+    });
+  }
+
+
   // Add team membership
   // PUT /teams/:id/memberships/:username
   addTeamMembership({teamId, userName, role}) {
     return this.putData({path:`/teams/${teamId}/memberships/${userName}`, data:{
+      role: role // member, maintener
+    }}).then(response => {
+      return response.data;
+    });
+  }
+
+  addOrganizationMembership({org, userName, role}) {
+    return this.putData({path:`/orgs/${org}/memberships/${userName}`, data:{
       role: role // member, maintener
     }}).then(response => {
       return response.data;
@@ -527,6 +544,8 @@ class GitHubClient {
     });
   }
 
+  // TODO: see https://developer.github.com/v3/repos/commits/#get-a-single-commit
+
   /* Contents
     TODO:
     - trees: https://developer.github.com/v3/git/trees/
@@ -627,7 +646,22 @@ class GitHubClient {
       return response.data;
     });
   }
-
+  // --- Create Hook ---
+  createHook({owner, repository, hookName, hookConfig, hookEvents, active}) {
+    return this.postData({path:`/repos/${owner}/${repository}/hooks`, data:{
+      hookName, hookConfig, hookEvents, active
+    }}).then(response => {
+      return response.data;
+    });
+  }
+  // organization hook
+  createOrganizationHook({org, hookName, hookConfig, hookEvents, active}) {
+    return this.postData({path:`/orgs/${org}/hooks`, data:{
+      hookName, hookConfig, hookEvents, active
+    }}).then(response => {
+      return response.data;
+    });
+  }
 
 
 } // end of class
