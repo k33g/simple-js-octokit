@@ -613,6 +613,25 @@ class GitHubClient {
     })
   }
 
+  createBranchFromRelease({branch, from, owner, repository}) {
+    return this.getReference({
+        owner: owner
+      , repository: repository
+      , ref: `tags/${from}`
+    }).then(data => {
+      let sha = data.object.sha
+      //console.log(sha)
+      return this.createReference({
+          ref: `refs/heads/${branch}`
+        , sha: sha
+        , owner: owner
+        , repository: repository
+      })
+    })
+  }
+
+
+
   // --- commit ---
   /*
     TODO: documentation + other commits features
